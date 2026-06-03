@@ -94,6 +94,11 @@ export default function App() {
   const mark = (id, v=true) => { const d={...done,[id]:v}; setDone(d); save(d); close() }
 
   const gerar = async () => {
+    const banco = (await import('../data/questoes.js')).QUESTOES
+    if (banco[modal.t.id]) {
+      setQs(banco[modal.t.id].sort(() => Math.random() - 0.5).slice(0, 5))
+      return
+    }
     setQs('loading')
     try {
       const r = await fetch('/api/generate', {
