@@ -71,18 +71,6 @@ const AREAS = [
     ],
   },
 ]
-Perfeito! Agora está tudo certo:
-- Pasta `app` ✅
-- `layout.js` ✅  
-- `page.js` ✅
-
-Mas o `page.js` ainda está incompleto — só tem a primeira parte que você colou. Vamos completar.
-
-**Clica em `page.js`** → depois no **lápis** para editar.
-
-Role até o final do código e cole esta segunda parte logo depois:
-
-```js
 const PRIO_CORES = { Alta: '#16a34a', Média: '#d97706', Baixa: '#dc2626' }
 const PRIO_BG = { Alta: '#f0fdf4', Média: '#fffbeb', Baixa: '#fef2f2' }
 const LETRAS = ['A', 'B', 'C', 'D', 'E']
