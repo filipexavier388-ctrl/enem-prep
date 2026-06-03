@@ -364,3 +364,6 @@ l2: [
       explanation: "'Contudo' é um conectivo adversativo — introduz uma ideia que se opõe ou problematiza o que foi dito antes. O autor reconhece o acesso à informação, mas apresenta um dado contrário às expectativas."
     },
   ],
+  },
+  ],
+}
