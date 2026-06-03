@@ -1,0 +1,73 @@
+'use client'
+import { useState, useEffect } from 'react'
+
+const AREAS = [
+  {
+    id: 'ling', name: 'Linguagens', cor: '#5b8fff',
+    topicos: [
+      { id: 'l1', nome: 'Interpretação de texto', prio: 'Alta', desc: 'Tese, argumento e intenção do autor em gêneros variados', prof: 'Prof. Noslen' },
+      { id: 'l2', nome: 'Coesão e coerência', prio: 'Alta', desc: 'Conectivos, retomadas pronominais e progressão temática', prof: 'Prof. Noslen' },
+      { id: 'l3', nome: 'Regência verbal e nominal', prio: 'Média', desc: 'Verbos de regência dupla e uso de preposição', prof: 'Prof. Noslen' },
+      { id: 'l4', nome: 'Concordância verbal/nominal', prio: 'Média', desc: 'Casos especiais de sujeito composto e coletivos', prof: 'Prof. Noslen' },
+      { id: 'l5', nome: 'Funções da linguagem', prio: 'Alta', desc: 'Referencial, emotiva, poética, fática, conativa, metalinguística', prof: 'Prof. Noslen' },
+      { id: 'l6', nome: 'Variação linguística', prio: 'Alta', desc: 'Registros formal, informal, regional e histórico', prof: 'Prof. Noslen' },
+      { id: 'l7', nome: 'Intertextualidade', prio: 'Alta', desc: 'Paródia, citação, alusão', prof: 'Prof. Noslen' },
+      { id: 'l8', nome: 'Modernismo', prio: 'Alta', desc: 'Características estéticas, ruptura com o parnasianismo', prof: 'Descomplica' },
+      { id: 'l9', nome: 'Realismo / Naturalismo', prio: 'Alta', desc: 'Crítica social, determinismo, Machado de Assis', prof: 'Descomplica' },
+      { id: 'l10', nome: 'Redação — estrutura', prio: 'Alta', desc: 'Introdução, desenvolvimento, conclusão', prof: 'Daniela Garcia' },
+      { id: 'l11', nome: 'Proposta de intervenção', prio: 'Alta', desc: 'Agente + ação + modo + finalidade', prof: 'Daniela Garcia' },
+      { id: 'l12', nome: 'Repertório sociocultural', prio: 'Alta', desc: 'Filosofia, sociologia, dados — como usar', prof: 'Daniela Garcia' },
+    ],
+  },
+  {
+    id: 'hum', name: 'Ciências Humanas', cor: '#34d399',
+    topicos: [
+      { id: 'h1', nome: 'Era Vargas e Brasil República', prio: 'Alta', desc: 'Proclamação, coronelismo, tenentismo, Era Vargas', prof: 'Débora Aladim' },
+      { id: 'h2', nome: 'Ditadura militar (1964–1985)', prio: 'Alta', desc: 'AI-5, milagre econômico, abertura política', prof: 'Parabólica' },
+      { id: 'h3', nome: 'Redemocratização / CF 1988', prio: 'Alta', desc: 'Diretas Já, constituinte, avanços de direitos', prof: 'Parabólica' },
+      { id: 'h4', nome: '2ª Guerra Mundial', prio: 'Alta', desc: 'Totalitarismo, nazismo, consequências globais', prof: 'Parabólica' },
+      { id: 'h5', nome: 'Guerra Fria', prio: 'Alta', desc: 'Bipolaridade, corrida armamentista', prof: 'Parabólica' },
+      { id: 'h6', nome: 'Geopolítica contemporânea', prio: 'Alta', desc: 'Blocos econômicos, BRICS, conflitos recentes', prof: 'Descomplica' },
+      { id: 'h7', nome: 'Urbanização brasileira', prio: 'Alta', desc: 'Metropolização, periferização, déficit habitacional', prof: 'Descomplica' },
+      { id: 'h8', nome: 'Problemas ambientais globais', prio: 'Alta', desc: 'Aquecimento global, desmatamento, recursos hídricos', prof: 'Descomplica' },
+      { id: 'h9', nome: 'Contrato social e Estado', prio: 'Alta', desc: 'Rousseau, Locke, Hobbes', prof: 'Parabólica' },
+      { id: 'h10', nome: 'Movimentos sociais', prio: 'Alta', desc: 'Feminismo, LGBTQIA+, MST, direitos civis', prof: 'Parabólica' },
+      { id: 'h11', nome: 'Trabalho e capitalismo', prio: 'Alta', desc: 'Marx, alienação, mais-valia, precarização', prof: 'Parabólica' },
+      { id: 'h12', nome: 'Globalização e desigualdade', prio: 'Alta', desc: 'Fluxos de capital, migração, IDH', prof: 'Descomplica' },
+    ],
+  },
+  {
+    id: 'nat', name: 'Ciências da Natureza', cor: '#a78bfa',
+    topicos: [
+      { id: 'n1', nome: 'Ecologia', prio: 'Alta', desc: 'Cadeias alimentares, biomas, ciclos biogeoquímicos', prof: 'Samuel Cunha' },
+      { id: 'n2', nome: 'Genética mendeliana', prio: 'Alta', desc: 'Leis de Mendel, heredogramas, dominância', prof: 'Samuel Cunha' },
+      { id: 'n3', nome: 'Genética molecular', prio: 'Alta', desc: 'DNA, RNA, síntese proteica, biotecnologia', prof: 'Samuel Cunha' },
+      { id: 'n4', nome: 'Evolução', prio: 'Alta', desc: 'Darwin, neodarwinismo, especiação', prof: 'Paulo Jubilut' },
+      { id: 'n5', nome: 'Funções orgânicas', prio: 'Alta', desc: 'Hidrocarbonetos, álcoois, ácidos, ésteres', prof: 'Larissa Campos' },
+      { id: 'n6', nome: 'Estequiometria', prio: 'Alta', desc: 'Mol, massa molar, rendimento de reação', prof: 'Felipe Sobis' },
+      { id: 'n7', nome: 'Reações orgânicas', prio: 'Alta', desc: 'Combustão, adição, substituição, saponificação', prof: 'Larissa Campos' },
+      { id: 'n8', nome: 'Cinemática', prio: 'Alta', desc: 'MRU, MRUV, gráficos de movimento', prof: 'Prof. Boaro' },
+      { id: 'n9', nome: 'Leis de Newton', prio: 'Alta', desc: 'Força resultante, 1ª, 2ª, 3ª lei, atrito', prof: 'Prof. Boaro' },
+      { id: 'n10', nome: 'Circuitos elétricos', prio: 'Alta', desc: 'Lei de Ohm, série, paralelo, potência', prof: 'Prof. Boaro' },
+      { id: 'n11', nome: 'Energia e trabalho', prio: 'Alta', desc: 'Energia potencial, cinética, conservação', prof: 'Prof. Boaro' },
+      { id: 'n12', nome: 'Eletroquímica', prio: 'Média', desc: 'Pilhas, eletrólise, oxidação e redução', prof: 'Larissa Campos' },
+    ],
+  },
+  {
+    id: 'mat', name: 'Matemática', cor: '#fb923c',
+    topicos: [
+      { id: 'm1', nome: 'Função do 1º grau', prio: 'Alta', desc: 'Gráfico, zeros, taxa de variação', prof: 'Prof. Ferretto' },
+      { id: 'm2', nome: 'Função do 2º grau', prio: 'Alta', desc: 'Vértice, raízes, gráfico, otimização', prof: 'Prof. Ferretto' },
+      { id: 'm3', nome: 'Função exponencial', prio: 'Alta', desc: 'Crescimento/decrescimento, juros compostos', prof: 'Prof. Ferretto' },
+      { id: 'm4', nome: 'Função logarítmica', prio: 'Alta', desc: 'Propriedades, equações logarítmicas', prof: 'Prof. Ferretto' },
+      { id: 'm5', nome: 'Geometria plana', prio: 'Alta', desc: 'Áreas de triângulo, quadriláteros, círculo', prof: 'Prof. Ferretto' },
+      { id: 'm6', nome: 'Geometria espacial', prio: 'Alta', desc: 'Volume de prisma, cilindro, cone, esfera', prof: 'Prof. Ferretto' },
+      { id: 'm7', nome: 'Trigonometria', prio: 'Alta', desc: 'Seno, cosseno, tangente, lei dos senos', prof: 'Prof. Ferretto' },
+      { id: 'm8', nome: 'Probabilidade', prio: 'Alta', desc: 'Espaço amostral, eventos independentes', prof: 'Prof. Ferretto' },
+      { id: 'm9', nome: 'Estatística descritiva', prio: 'Alta', desc: 'Média, mediana, moda, desvio, gráficos', prof: 'Prof. Ferretto' },
+      { id: 'm10', nome: 'Juros simples e compostos', prio: 'Alta', desc: 'Taxa, tempo, montante', prof: 'Prof. Ferretto' },
+      { id: 'm11', nome: 'Porcentagem e desconto', prio: 'Alta', desc: 'Aumento/desconto sucessivo, markup', prof: 'Prof. Ferretto' },
+      { id: 'm12', nome: 'Análise combinatória', prio: 'Média', desc: 'Permutação, combinação, arranjo', prof: 'Prof. Ferretto' },
+    ],
+  },
+]
